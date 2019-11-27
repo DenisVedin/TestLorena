@@ -13,21 +13,21 @@ namespace TestLorena
 {
     public partial class FormTest : Form
     {
-        //массив салонов
+        //Массив салонов
         List<SalonModel> salons = new List<SalonModel>();
 
-        //переменные для работы с БД
+        //Переменные для работы с БД
         private SQLiteConnection sql_con;
         private SQLiteCommand sql_cmd;
         private SQLiteDataAdapter DB;
 
-        //функция соеденения с базой данных
+        //Функция соеденения с базой данных
         private void SetConnection()
         {
             sql_con = new SQLiteConnection("Data Source=TestLorena.db;Version=3;New=False;Compress=True;");
         }
 
-        //функция выполнения SQL запросов (INSERT, UPDATE, DELETE)
+        //Функция выполнения SQL запросов (INSERT, UPDATE, DELETE)
         private void ExecuteQuery(string txtQuery)
         {
             SetConnection();
@@ -38,7 +38,7 @@ namespace TestLorena
             sql_con.Close();
         }
 
-        //функция дефолтных значений
+        //Функция дефолтных значений
         private void DefaultValues()
         {
             salons.Add(new SalonModel { Id = 1, Name = "Миасс", Discount = 4, Addiction = false, Description = "", Parent = 0 });
@@ -54,7 +54,7 @@ namespace TestLorena
         {
             InitializeComponent();
 
-            //запрос данных списка салонов
+            //Запрос данных списка салонов
             SetConnection();
             sql_con.Open();
             sql_cmd = sql_con.CreateCommand();
@@ -69,10 +69,10 @@ namespace TestLorena
             if (DT.Rows.Count == 0)
             {
 
-                // формирование массива со списком салонов
+                //Формирование массива со списком салонов
                 DefaultValues();
 
-                //формирование и выполнение запроса на запись списка салонов
+                //Формирование и выполнение запроса на запись списка салонов
                 string txtQuery = "INSERT INTO `SalonDiscount` (`Id`, `Name`, `Discount`, `Addiction`, `Description`, `Parent`) VALUES";
                 foreach (SalonModel val in salons)
                 {
@@ -81,7 +81,7 @@ namespace TestLorena
                 txtQuery = txtQuery.Remove(txtQuery.Length - 1);
                 ExecuteQuery(txtQuery);
 
-                //повторный запрос списка салонов
+                //Повторный запрос списка салонов
                 sql_cmd = sql_con.CreateCommand();
                 DB = new SQLiteDataAdapter(CommandText, sql_con);
                 DataSet DS1 = new DataSet();
@@ -92,12 +92,103 @@ namespace TestLorena
             }
 
             
-            //добовление данных из запроса в ComboBox
+            //Добовление данных из запроса в ComboBox
             comboBoxSalon.ValueMember = "Id";
             comboBoxSalon.DisplayMember = "Name";
             comboBoxSalon.DataSource = DT;
             comboBoxSalon.DropDownStyle = ComboBoxStyle.DropDownList;
             sql_con.Close();
+        }
+
+        //Блокировка ввода любых символов кроме цифр в поле "Стоимость"
+        private void textBoxPrice_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+            
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+        }
+
+        //Функция получения скидки предка с рекурсивным прохождением до корня дерева
+        private static int GetParentDiscount(int Id, bool Addiction, int DiscountParent, SQLiteConnection sql_con)
+        {
+            if (Addiction)
+            {
+                SQLiteCommand sql_cmd1 = sql_con.CreateCommand();
+                string CommandText = "SELECT * FROM `SalonDiscount` WHERE `Id` = '" + Id + "'";
+                SQLiteDataAdapter DB1 = new SQLiteDataAdapter(CommandText, sql_con);
+                DataSet DS3 = new DataSet();
+                DB1.Fill(DS3);
+                DataTable DT3 = new DataTable();
+                DT3 = DS3.Tables[0];
+                foreach (DataRow DR in DT3.Rows)
+                {
+                    DiscountParent += Convert.ToInt32(DR["Discount"]);
+                    DiscountParent = GetParentDiscount(Convert.ToInt32(DR["Parent"]), Convert.ToBoolean(DR["Addiction"]), DiscountParent, sql_con);
+                }
+            }
+
+            return DiscountParent;
+        }
+
+        //Клик на кнопку "Расчитать"
+        private void buttonCalculate_Click(object sender, EventArgs e)
+        {
+            //Проверка поля "Стоимость" на пустоту
+            if (textBoxPrice.Text.ToString() == "")
+            {
+                //Если поле "Стоимость" пусто, то выводить сообщение об ошибке
+                MessageBox.Show("Ошибка! Заполните поле 'Стоимость'");
+            }
+            else
+            {
+                //Если поле "Стоимость" заполнено, то выполняется запрос данных о конкретном салоне выбранного из списка
+                //расчёт стоимости и запись в таблицы
+                sql_con.Open();
+                sql_cmd = sql_con.CreateCommand();
+                string CommandText = "SELECT * FROM `SalonDiscount` WHERE `Id` = '" + comboBoxSalon.SelectedValue.ToString() + "'";
+                DB = new SQLiteDataAdapter(CommandText, sql_con);
+                DataSet DS2 = new DataSet();
+                DB.Fill(DS2);
+                DataTable DT2 = new DataTable();
+                DT2 = DS2.Tables[0];
+                int Discount = 0;
+                int DiscountParent = 0;
+                int Price = 0;
+                double S = 0.0;
+                string txtQuery = "";
+                foreach (DataRow DR in DT2.Rows)
+                {
+                    //Скидка
+                    Discount = Convert.ToInt32(DR["Discount"]);
+                    //Цена
+                    Price = Convert.ToInt32(textBoxPrice.Text.ToString());
+
+                    //Запрос скидки предков
+                    DiscountParent = GetParentDiscount(Convert.ToInt32(DR["Parent"]), Convert.ToBoolean(DR["Addiction"]), DiscountParent, sql_con);
+                    //Расчёт по формуле
+                    S = (double)Price - ((double)Price * (((double)Discount + (double)DiscountParent) / 100));
+                    //Округление результата до сотых
+                    S = Math.Round(S, 2);
+
+                    //Запись в таблицу для восставновления расчётов по формуле
+                    txtQuery = "INSERT INTO `InfoFormula` (`Id`, `Price`, `Discount`, `DiscountParent`, `Sum`) VALUES " +
+                        "(NULL, '" + Price.ToString().Replace(",", ".") + "', '" + Discount.ToString().Replace(",", ".") + "', '" + DiscountParent.ToString().Replace(",", ".") + "', '" + S.ToString().Replace(",", ".") + "')";
+                    ExecuteQuery(txtQuery);
+
+                    //Запись в таблицу результатов для вывода пользователю
+                    txtQuery = "INSERT INTO `ResultSelected` (`Id`, `Selected`, `Price`, `Sum`) VALUES " +
+                        "(NULL, '" + DR["Name"].ToString() + "', '" + Price.ToString().Replace(",", ".") + "', '" + S.ToString().Replace(",", ".") + "')";
+                    ExecuteQuery(txtQuery);
+                }
+                sql_con.Close();
+
+            }
         }
     }
 }
