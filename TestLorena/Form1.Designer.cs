@@ -31,10 +31,10 @@
             this.labelPrice = new System.Windows.Forms.Label();
             this.textBoxPrice = new System.Windows.Forms.TextBox();
             this.labelCity = new System.Windows.Forms.Label();
-            this.textBoxCity = new System.Windows.Forms.TextBox();
             this.buttonCalculate = new System.Windows.Forms.Button();
             this.labelResult = new System.Windows.Forms.Label();
             this.dataGridViewResult = new System.Windows.Forms.DataGridView();
+            this.comboBoxSalon = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewResult)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,13 +62,6 @@
             this.labelCity.Size = new System.Drawing.Size(73, 13);
             this.labelCity.TabIndex = 2;
             this.labelCity.Text = "Город/Салон";
-            // 
-            // textBoxCity
-            // 
-            this.textBoxCity.Location = new System.Drawing.Point(146, 32);
-            this.textBoxCity.Name = "textBoxCity";
-            this.textBoxCity.Size = new System.Drawing.Size(100, 20);
-            this.textBoxCity.TabIndex = 3;
             // 
             // buttonCalculate
             // 
@@ -105,15 +98,23 @@
             this.dataGridViewResult.TabIndex = 6;
             this.dataGridViewResult.TabStop = false;
             // 
+            // comboBoxSalon
+            // 
+            this.comboBoxSalon.FormattingEnabled = true;
+            this.comboBoxSalon.Location = new System.Drawing.Point(146, 32);
+            this.comboBoxSalon.Name = "comboBoxSalon";
+            this.comboBoxSalon.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxSalon.TabIndex = 7;
+            // 
             // FormTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(397, 334);
+            this.Controls.Add(this.comboBoxSalon);
             this.Controls.Add(this.dataGridViewResult);
             this.Controls.Add(this.labelResult);
             this.Controls.Add(this.buttonCalculate);
-            this.Controls.Add(this.textBoxCity);
             this.Controls.Add(this.labelCity);
             this.Controls.Add(this.textBoxPrice);
             this.Controls.Add(this.labelPrice);
@@ -130,10 +131,10 @@
         private System.Windows.Forms.Label labelPrice;
         private System.Windows.Forms.TextBox textBoxPrice;
         private System.Windows.Forms.Label labelCity;
-        private System.Windows.Forms.TextBox textBoxCity;
         private System.Windows.Forms.Button buttonCalculate;
         private System.Windows.Forms.Label labelResult;
         private System.Windows.Forms.DataGridView dataGridViewResult;
+        private System.Windows.Forms.ComboBox comboBoxSalon;
     }
 }
 
