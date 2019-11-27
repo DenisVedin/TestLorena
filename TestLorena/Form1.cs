@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace TestLorena
 {
-    public partial class Form1 : Form
+    public partial class FormTest : Form
     {
-        public Form1()
+        public FormTest()
         {
             InitializeComponent();
         }

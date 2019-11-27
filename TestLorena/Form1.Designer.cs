@@ -1,6 +1,6 @@
 ﻿namespace TestLorena
 {
-    partial class Form1
+    partial class FormTest
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -28,13 +28,112 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.labelPrice = new System.Windows.Forms.Label();
+            this.textBoxPrice = new System.Windows.Forms.TextBox();
+            this.labelCity = new System.Windows.Forms.Label();
+            this.textBoxCity = new System.Windows.Forms.TextBox();
+            this.buttonCalculate = new System.Windows.Forms.Button();
+            this.labelResult = new System.Windows.Forms.Label();
+            this.dataGridViewResult = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewResult)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // labelPrice
+            // 
+            this.labelPrice.AutoSize = true;
+            this.labelPrice.Location = new System.Drawing.Point(18, 17);
+            this.labelPrice.Name = "labelPrice";
+            this.labelPrice.Size = new System.Drawing.Size(62, 13);
+            this.labelPrice.TabIndex = 0;
+            this.labelPrice.Text = "Стоимость";
+            // 
+            // textBoxPrice
+            // 
+            this.textBoxPrice.Location = new System.Drawing.Point(21, 33);
+            this.textBoxPrice.Name = "textBoxPrice";
+            this.textBoxPrice.Size = new System.Drawing.Size(100, 20);
+            this.textBoxPrice.TabIndex = 1;
+            // 
+            // labelCity
+            // 
+            this.labelCity.AutoSize = true;
+            this.labelCity.Location = new System.Drawing.Point(143, 16);
+            this.labelCity.Name = "labelCity";
+            this.labelCity.Size = new System.Drawing.Size(73, 13);
+            this.labelCity.TabIndex = 2;
+            this.labelCity.Text = "Город/Салон";
+            // 
+            // textBoxCity
+            // 
+            this.textBoxCity.Location = new System.Drawing.Point(146, 32);
+            this.textBoxCity.Name = "textBoxCity";
+            this.textBoxCity.Size = new System.Drawing.Size(100, 20);
+            this.textBoxCity.TabIndex = 3;
+            // 
+            // buttonCalculate
+            // 
+            this.buttonCalculate.Location = new System.Drawing.Point(293, 30);
+            this.buttonCalculate.Name = "buttonCalculate";
+            this.buttonCalculate.Size = new System.Drawing.Size(75, 23);
+            this.buttonCalculate.TabIndex = 4;
+            this.buttonCalculate.Text = "Расчитать";
+            this.buttonCalculate.UseVisualStyleBackColor = true;
+            // 
+            // labelResult
+            // 
+            this.labelResult.AutoSize = true;
+            this.labelResult.Location = new System.Drawing.Point(21, 60);
+            this.labelResult.Name = "labelResult";
+            this.labelResult.Size = new System.Drawing.Size(62, 13);
+            this.labelResult.TabIndex = 5;
+            this.labelResult.Text = "Результат:";
+            // 
+            // dataGridViewResult
+            // 
+            this.dataGridViewResult.AllowUserToAddRows = false;
+            this.dataGridViewResult.AllowUserToDeleteRows = false;
+            this.dataGridViewResult.AllowUserToResizeColumns = false;
+            this.dataGridViewResult.AllowUserToResizeRows = false;
+            this.dataGridViewResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewResult.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dataGridViewResult.EnableHeadersVisualStyles = false;
+            this.dataGridViewResult.Location = new System.Drawing.Point(21, 77);
+            this.dataGridViewResult.MultiSelect = false;
+            this.dataGridViewResult.Name = "dataGridViewResult";
+            this.dataGridViewResult.RowHeadersVisible = false;
+            this.dataGridViewResult.Size = new System.Drawing.Size(347, 245);
+            this.dataGridViewResult.TabIndex = 6;
+            this.dataGridViewResult.TabStop = false;
+            // 
+            // FormTest
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(397, 334);
+            this.Controls.Add(this.dataGridViewResult);
+            this.Controls.Add(this.labelResult);
+            this.Controls.Add(this.buttonCalculate);
+            this.Controls.Add(this.textBoxCity);
+            this.Controls.Add(this.labelCity);
+            this.Controls.Add(this.textBoxPrice);
+            this.Controls.Add(this.labelPrice);
+            this.Name = "FormTest";
+            this.Text = "Тестовое задание";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewResult)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Label labelPrice;
+        private System.Windows.Forms.TextBox textBoxPrice;
+        private System.Windows.Forms.Label labelCity;
+        private System.Windows.Forms.TextBox textBoxCity;
+        private System.Windows.Forms.Button buttonCalculate;
+        private System.Windows.Forms.Label labelResult;
+        private System.Windows.Forms.DataGridView dataGridViewResult;
     }
 }
 
