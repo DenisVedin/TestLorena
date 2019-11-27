@@ -38,6 +38,23 @@ namespace TestLorena
             sql_con.Close();
         }
 
+        //Функция вывода таблицы результатов пользователю
+        private void LoadDataResult()
+        {
+            sql_con.Open();
+            sql_cmd = sql_con.CreateCommand();
+            string CommandText = "SELECT `Selected` AS `Выбор`, `Price` AS `Цена`, `Sum` AS `Результат` FROM `ResultSelected`";
+            SQLiteDataAdapter DB4 = new SQLiteDataAdapter(CommandText, sql_con);
+            DataSet DS4 = new DataSet();
+            DB4.Fill(DS4);
+            DataTable DT4 = new DataTable();
+            DT4 = DS4.Tables[0];
+            dataGridViewResult.DataSource = DT4;
+            sql_con.Close();
+
+
+        }
+
         //Функция дефолтных значений
         private void DefaultValues()
         {
@@ -98,6 +115,9 @@ namespace TestLorena
             comboBoxSalon.DataSource = DT;
             comboBoxSalon.DropDownStyle = ComboBoxStyle.DropDownList;
             sql_con.Close();
+
+            //Вывод таблицы результатов пользователю
+            LoadDataResult();
         }
 
         //Блокировка ввода любых символов кроме цифр в поле "Стоимость"
@@ -187,6 +207,9 @@ namespace TestLorena
                     ExecuteQuery(txtQuery);
                 }
                 sql_con.Close();
+
+                //Вывод таблицы результатов пользователю
+                LoadDataResult();
 
             }
         }
